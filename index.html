@@ -1,72 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Clicker Game</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    body {
-      text-align: center;
-      font-family: Arial;
-      background: #0f172a;
-      color: white;
-      margin-top: 80px;
-    }
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.expand();
 
-    .coin {
-      font-size: 60px;
-      cursor: pointer;
-      user-select: none;
-      transition: 0.1s;
-    }
+  // 💾 گرفتن امتیاز (با امنیت کامل)
+  let score = localStorage.getItem("score");
 
-    .coin:active {
-      transform: scale(0.9);
-    }
+  if (score === null || score === undefined) {
+    score = 0;
+  } else {
+    score = Number(score);
+  }
 
-    .score {
-      font-size: 30px;
-      margin-top: 20px;
-    }
+  document.getElementById("score").innerText = score;
 
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      border: none;
-      background: #22c55e;
-      color: white;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-  </style>
-</head>
+  function addScore() {
+    score++;
 
-<body>
+    // 💾 ذخیره فوری
+    localStorage.setItem("score", String(score));
 
-  <h1>🔥 My Clicker Game</h1>
+    document.getElementById("score").innerText = score;
+  }
 
-  <div class="coin" onclick="addScore()">🪙</div>
+  function reset() {
+    score = 0;
+    localStorage.setItem("score", "0");
+    document.getElementById("score").innerText = score;
+  }
 
-  <div class="score">Score: <span id="score">0</span></div>
-
-  <button onclick="reset()">Reset</button>
-
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-
-    let score = 0;
-
-    function addScore() {
-      score++;
-      document.getElementById("score").innerText = score;
-    }
-
-    function reset() {
-      score = 0;
-      document.getElementById("score").innerText = score;
-    }
-  </script>
-
-</body>
-</html>
+  // 🔥 تست: هر بار صفحه باز شد مطمئن شو ذخیره هست
+  console.log("Loaded score:", score);
+</script>
