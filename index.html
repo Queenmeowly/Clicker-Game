@@ -1,29 +1,115 @@
-<script>
-const tg = window.Telegram.WebApp;
-tg.expand();
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mini App</title>
 
-let score = 0;
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-// 💾 localStorage امن (فعلاً)
-let saved = localStorage.getItem("score");
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding-top: 50px;
+    }
 
-if (saved !== null) {
-  score = Number(saved);
-}
+    .card {
+      background: #1e293b;
+      margin: 20px;
+      padding: 20px;
+      border-radius: 12px;
+    }
 
-document.getElementById("score").innerText = score;
+    .coin {
+      font-size: 60px;
+      cursor: pointer;
+      user-select: none;
+    }
 
-function addScore() {
-  score++;
-  document.getElementById("score").innerText = score;
+    button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      background: #22c55e;
+      color: white;
+    }
+  </style>
+</head>
 
-  localStorage.setItem("score", String(score));
-}
+<body>
 
-function reset() {
-  score = 0;
-  localStorage.setItem("score", "0");
-  document.getElementById("score").innerText = score;
-}
-</script>
+  <div class="card">
+    <h2>👤 Profile</h2>
+    <p id="user">Loading...</p>
+  </div>
 
+  <div class="card">
+    <h2>🎮 Game</h2>
+
+    <div class="coin" onclick="addScore()">🪙</div>
+
+    <p>Score: <span id="score">0</span></p>
+
+    <button onclick="reset()">Reset</button>
+  </div>
+
+  <script>
+    // 🔥 اول چک کن تلگرام هست یا نه
+    let tg = null;
+    try {
+      tg = window.Telegram.WebApp;
+      tg.expand();
+    } catch (e) {
+      console.log("Not in Telegram");
+    }
+
+    // 👤 اسم کاربر (اگر تلگرام بود)
+    let username = "Guest";
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      username = tg.initDataUnsafe.user.first_name;
+    }
+    document.getElementById("user").innerText = username;
+
+    // 💾 لود امتیاز (safe)
+    let score = 0;
+
+    try {
+      let saved = localStorage.getItem("score");
+      if (saved !== null) {
+        score = Number(saved);
+      }
+    } catch (e) {
+      score = 0;
+    }
+
+    function updateUI() {
+      document.getElementById("score").innerText = score;
+    }
+
+    updateUI();
+
+    function addScore() {
+      score++;
+      updateUI();
+
+      try {
+        localStorage.setItem("score", String(score));
+      } catch (e) {}
+    }
+
+    function reset() {
+      score = 0;
+      updateUI();
+
+      try {
+        localStorage.setItem("score", "0");
+      } catch (e) {}
+    }
+  </script>
+
+</body>
+</html>
