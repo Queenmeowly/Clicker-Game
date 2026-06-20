@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Clicker Game</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      margin-top: 80px;
+    }
+
+    .coin {
+      font-size: 60px;
+      cursor: pointer;
+      user-select: none;
+      transition: 0.1s;
+    }
+
+    .coin:active {
+      transform: scale(0.9);
+    }
+
+    .score {
+      font-size: 30px;
+      margin-top: 20px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      background: #22c55e;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🔥 My Clicker Game</h1>
+
+  <div class="coin" onclick="addScore()">🪙</div>
+
+  <div class="score">Score: <span id="score">0</span></div>
+
+  <button onclick="reset()">Reset</button>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    let score = 0;
+
+    function addScore() {
+      score++;
+      document.getElementById("score").innerText = score;
+    }
+
+    function reset() {
+      score = 0;
+      document.getElementById("score").innerText = score;
+    }
+  </script>
+
+</body>
+</html>
