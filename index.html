@@ -4,31 +4,25 @@ tg.expand();
 
 let score = 0;
 
-// 📥 لود از تلگرام
-tg.CloudStorage.getItem("score", (err, value) => {
-  if (value === null || value === undefined) {
-    score = 0;
-  } else {
-    score = parseInt(value);
-  }
+// 💾 localStorage امن (فعلاً)
+let saved = localStorage.getItem("score");
 
-  document.getElementById("score").innerText = score;
-});
+if (saved !== null) {
+  score = Number(saved);
+}
 
-// ➕ افزودن امتیاز
+document.getElementById("score").innerText = score;
+
 function addScore() {
   score++;
   document.getElementById("score").innerText = score;
 
-  // 📤 ذخیره در تلگرام
-  tg.CloudStorage.setItem("score", String(score));
+  localStorage.setItem("score", String(score));
 }
 
-// 🔄 ریست
 function reset() {
   score = 0;
+  localStorage.setItem("score", "0");
   document.getElementById("score").innerText = score;
-
-  tg.CloudStorage.setItem("score", "0");
 }
 </script>
